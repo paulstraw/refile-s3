@@ -143,9 +143,9 @@ module Refile
     # backend directly.
     #
     # @return [Refile::Signature]
-    def presign
+    def presign(opts)
       id = RandomHasher.new.hash
-      signature = @bucket.presigned_post(key: [*@prefix, id].join("/"))
+      signature = @bucket.presigned_post(key: [*@prefix, id].join("/"), **opts)
       signature.content_length_range(0..@max_size) if @max_size
       Signature.new(as: "file", id: id, url: signature.url.to_s, fields: signature.fields)
     end
